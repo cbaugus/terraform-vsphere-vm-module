@@ -192,7 +192,7 @@ variable "dns_suffix_list" {
 
 variable "firmware" {
   description = "The firmware interface to use on the virtual machine. Can be one of bios or EFI."
-  default     = "EFI"
+  default     = "efi"
 }
 
 variable "efi_secure_boot" {
