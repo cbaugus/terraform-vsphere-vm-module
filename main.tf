@@ -170,7 +170,7 @@ resource "vsphere_virtual_machine" "Linux" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook -u ${var.local_exec_user} -i '${self.default_ip_address},' --private-key ${var.local_exec_ssh_key_file} ${var.path_to_ansible} ${var.ansible_args} "
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.local_exec_user} -i '${self.default_ip_address},' --private-key ${var.local_exec_ssh_key_file} ${var.path_to_ansible} ${var.ansible_args} "
   }
 
 }
