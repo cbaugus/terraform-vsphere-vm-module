@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a3a914d7-8f14-48f8-810b-d5d587058583" name="Changes" comment="update efi deploy">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +40,7 @@
       <option name="presentableId" value="Default" />
       <updated>1675034574106</updated>
       <workItem from="1675034575308" duration="1619000" />
-      <workItem from="1675045679972" duration="5249000" />
+      <workItem from="1675045679972" duration="6099000" />
     </task>
     <task id="LOCAL-00001" summary="update efi deploy">
       <created>1675058355633</created>
@@ -50,7 +49,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675058355633</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update efi deploy">
+      <created>1675059531074</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1675059531074</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

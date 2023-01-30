@@ -52,8 +52,8 @@ resource "vsphere_virtual_machine" "Linux" {
   custom_attributes       = var.custom_attributes
   annotation              = var.annotation
   extra_config            = var.extra_config
-  firmware                = var.firmware
-  efi_secure_boot_enabled = var.efi_secure_boot
+  firmware                = "efi"
+  efi_secure_boot_enabled = "true"
   enable_disk_uuid        = var.enable_disk_uuid
   storage_policy_id       = var.storage_policy_id
 
