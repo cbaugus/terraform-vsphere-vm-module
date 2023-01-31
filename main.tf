@@ -36,6 +36,19 @@ data "vsphere_virtual_machine" "template" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
+data "vsphere_tag_category" "category" {
+  count      = var.tags != null ? length(var.tags) : 0
+  name       = keys(var.tags)[count.index]
+  depends_on = [var.tag_depends_on]
+}
+
+data "vsphere_tag" "tag" {
+  count       = var.tags != null ? length(var.tags) : 0
+  name        = var.tags[keys(var.tags)[count.index]]
+  category_id = data.vsphere_tag_category.category[count.index].id
+  depends_on  = [var.tag_depends_on]
+}
+
 locals {
   interface_count     = length(var.ipv4submask) #Used for Subnet handeling
   template_disk_count = length(data.vsphere_virtual_machine.template.disks)
@@ -48,12 +61,12 @@ resource "vsphere_virtual_machine" "Linux" {
 
   resource_pool_id        = data.vsphere_resource_pool.pool.id
   folder                  = var.vmfolder
-  tags                    = var.tag_ids
+  tags                    = var.tag_ids != null ? var.tag_ids : data.vsphere_tag.tag[*].id
   custom_attributes       = var.custom_attributes
   annotation              = var.annotation
   extra_config            = var.extra_config
-  firmware                = "efi"
-  efi_secure_boot_enabled = "true"
+  firmware                = var.firmware
+  efi_secure_boot_enabled = var.efi_secure_boot
   enable_disk_uuid        = var.enable_disk_uuid
   storage_policy_id       = var.storage_policy_id
 
@@ -72,11 +85,11 @@ resource "vsphere_virtual_machine" "Linux" {
   scsi_bus_sharing       = var.scsi_bus_sharing
   scsi_type              = var.scsi_type != "" ? var.scsi_type : data.vsphere_virtual_machine.template.scsi_type
   scsi_controller_count = max(max(0, flatten([
-    for item in values(var.data_disk) : [
-      for elem, val in item :
-      "${elem}" == "data_disk_scsi_controller" ? val : 0
+  for item in values(var.data_disk) : [
+  for elem, val in item :
+  "${elem}" == "data_disk_scsi_controller" ? val : 0
     ]
-  ])...) + 1, var.scsi_controller)
+    ])...) + 1, var.scsi_controller)
   wait_for_guest_net_routable = var.wait_for_guest_net_routable
   wait_for_guest_ip_timeout   = var.wait_for_guest_ip_timeout
   wait_for_guest_net_timeout  = var.wait_for_guest_net_timeout
@@ -97,9 +110,9 @@ resource "vsphere_virtual_machine" "Linux" {
     content {
       label            = length(var.disk_label) > 0 ? var.disk_label[template_disks.key] : "disk${template_disks.key}"
       size             = var.disk_size_gb != null ? var.disk_size_gb[template_disks.key] : data.vsphere_virtual_machine.template.disks[template_disks.key].size
-      #unit_number      = var.scsi_controller != null ? var.scsi_controller * 15 + template_disks.key : template_disks.key
+      unit_number      = var.scsi_controller != null ? var.scsi_controller * 15 + template_disks.key : template_disks.key
       thin_provisioned = data.vsphere_virtual_machine.template.disks[template_disks.key].thin_provisioned
-      #eagerly_scrub    = data.vsphere_virtual_machine.template.disks[template_disks.key].eagerly_scrub
+      eagerly_scrub    = data.vsphere_virtual_machine.template.disks[template_disks.key].eagerly_scrub
       datastore_id     = var.disk_datastore != "" ? data.vsphere_datastore.disk_datastore[0].id : null
     }
   }
@@ -121,27 +134,27 @@ resource "vsphere_virtual_machine" "Linux" {
     linked_clone  = var.linked_clone
     timeout       = var.timeout
 
-//    customize {
-//      timeout = 1
-//      linux_options {
-//        host_name    = var.vmname
-//        domain       = var.vmdomain
-////        hw_clock_utc = var.hw_clock_utc
-//      }
-//      # hardware VMWare OS customization exp
-//      # TODO: fig this mess out
-//      network_interface {}
-////      dynamic "network_interface" {
-////        for_each = keys(var.network)
-////        content {
-////          ipv4_address = lookup(var.network, network_interface.key, "")
-////          ipv4_netmask = "%{if length(var.ipv4submask) == 1}${var.ipv4submask[0]}%{else}${var.ipv4submask[network_interface.key]}%{endif}"
-////        }
-////      }
-////      dns_server_list = var.vmdns
-////      dns_suffix_list = var.dns_suffix_list
-////      ipv4_gateway    = var.vmgateway
-//    }
+    //    customize {
+    //      timeout = 1
+    //      linux_options {
+    //        host_name    = var.vmname
+    //        domain       = var.vmdomain
+    ////        hw_clock_utc = var.hw_clock_utc
+    //      }
+    //      # hardware VMWare OS customization exp
+    //      # TODO: fig this mess out
+    //      network_interface {}
+    ////      dynamic "network_interface" {
+    ////        for_each = keys(var.network)
+    ////        content {
+    ////          ipv4_address = lookup(var.network, network_interface.key, "")
+    ////          ipv4_netmask = "%{if length(var.ipv4submask) == 1}${var.ipv4submask[0]}%{else}${var.ipv4submask[network_interface.key]}%{endif}"
+    ////        }
+    ////      }
+    ////      dns_server_list = var.vmdns
+    ////      dns_suffix_list = var.dns_suffix_list
+    ////      ipv4_gateway    = var.vmgateway
+    //    }
   }
 
   // Advanced options
@@ -170,7 +183,7 @@ resource "vsphere_virtual_machine" "Linux" {
   }
 
   provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.local_exec_user} -i '${self.default_ip_address},' --private-key ${var.local_exec_ssh_key_file} ${var.path_to_ansible} ${var.ansible_args} "
+    command = "ansible-playbook -u ${var.local_exec_user} -i '${self.default_ip_address},' --private-key ${var.local_exec_ssh_key_file} ${var.path_to_ansible} ${var.ansible_args} "
   }
 
 }

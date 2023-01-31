@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a3a914d7-8f14-48f8-810b-d5d587058583" name="Changes" comment="update efi deploy">
+    <list default="true" id="a3a914d7-8f14-48f8-810b-d5d587058583" name="Changes" comment="update ANSIBLE_HOST_KEY_CHECKING">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.tf" beforeDir="false" afterPath="$PROJECT_DIR$/main.tf" afterDir="false" />
     </list>
@@ -11,6 +11,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -41,7 +46,7 @@
       <option name="presentableId" value="Default" />
       <updated>1675034574106</updated>
       <workItem from="1675034575308" duration="1619000" />
-      <workItem from="1675045679972" duration="7543000" />
+      <workItem from="1675045679972" duration="10212000" />
     </task>
     <task id="LOCAL-00001" summary="update efi deploy">
       <created>1675058355633</created>
@@ -64,7 +69,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675060504982</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="update ANSIBLE_HOST_KEY_CHECKING">
+      <created>1675103124145</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1675103124145</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -83,6 +95,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update efi deploy" />
-    <option name="LAST_COMMIT_MESSAGE" value="update efi deploy" />
+    <MESSAGE value="update ANSIBLE_HOST_KEY_CHECKING" />
+    <option name="LAST_COMMIT_MESSAGE" value="update ANSIBLE_HOST_KEY_CHECKING" />
   </component>
 </project>

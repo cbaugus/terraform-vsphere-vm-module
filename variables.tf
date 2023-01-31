@@ -149,9 +149,15 @@ variable "vmdns" {
 }
 
 #Global Customization Variables
+variable "tags" {
+  description = "The names of any tags to attach to this resource. They must already exist."
+  type        = map(any)
+  default     = null
+}
+
 variable "tag_ids" {
   description = "The ids of any tags to attach to this resource. They must already exist."
-  type        = list(string)
+  type        = list(any)
   default     = null
 }
 
